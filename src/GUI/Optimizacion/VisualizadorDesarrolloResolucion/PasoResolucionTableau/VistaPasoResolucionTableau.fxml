@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Optimizacion.VisualizadorDesarrolloResolucion.PasoResolucionTableau.PresentadorPasoResolucionTableau">
+   <children>
+      <HBox spacing="5.0">
+         <children>
+            <Label text="%vista_paso_resolucion_tableau.paso_numero" />
+            <Label fx:id="pasoNumeroLabel" text="1" />
+         </children>
+      </HBox>
+      <VBox spacing="2.0">
+         <children>
+            <Label text="%vista_paso_resolucion_tableau.tableau_antes_simplificar" />
+            <HBox alignment="CENTER_LEFT" spacing="10.0">
+               <children>
+                  <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="5.0">
+                     <children>
+                        <Label text="%vista_paso_resolucion_tableau.fila_elegida_como_pivot" />
+                        <Label fx:id="filaElegidaComoPivot" text="1" />
+                     </children>
+                  </HBox>
+                  <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="5.0">
+                     <children>
+                        <Label prefHeight="15.0" prefWidth="210.0" text="%vista_paso_resolucion_tableau.columna_elegida_como_pivot" />
+                        <Label fx:id="columnaElegidaComoPivot" text="1" />
+                     </children>
+                  </HBox>
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </HBox>
+            <BorderPane prefHeight="200.0" prefWidth="200.0">
+               <center>
+                  <TableView fx:id="tableauAntesDeSimplificar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                  </TableView>
+               </center>
+               <left>
+                  <VBox spacing="10.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <Label text="%vista_paso_resolucion_tableau.M" />
+                        <Label text="%vista_paso_resolucion_tableau.Z" />
+                     </children>
+                     <BorderPane.margin>
+                        <Insets right="5.0" top="30.0" />
+                     </BorderPane.margin>
+                  </VBox>
+               </left>
+            </BorderPane>
+         </children>
+      </VBox>
+      <VBox spacing="2.0">
+         <children>
+            <Label text="%vista_paso_resolucion_tableau.tableau_despues_simplificar_y_antes_gauss_jordan" />
+            <BorderPane prefHeight="200.0" prefWidth="200.0">
+               <left>
+                  <VBox prefHeight="200.0" prefWidth="20.0" spacing="10.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <Label text="%vista_paso_resolucion_tableau.M" />
+                        <Label text="%vista_paso_resolucion_tableau.Z" />
+                     </children>
+                     <BorderPane.margin>
+                        <Insets right="5.0" top="30.0" />
+                     </BorderPane.margin>
+                  </VBox>
+               </left>
+               <center>
+                  <TableView fx:id="tableuDespDeSimplificarYAntesGaussJordan" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                  </TableView>
+               </center>
+            </BorderPane>
+         </children>
+      </VBox>
+      <VBox spacing="2.0">
+         <children>
+            <Label text="%vista_paso_resolucion_tableau.tableau_despues_aplicar_gauss_jordan" />
+            <BorderPane prefHeight="200.0" prefWidth="200.0">
+               <left>
+                  <VBox prefHeight="200.0" prefWidth="20.0" spacing="10.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <Label text="%vista_paso_resolucion_tableau.M" />
+                        <Label text="%vista_paso_resolucion_tableau.Z" />
+                     </children>
+                     <BorderPane.margin>
+                        <Insets right="5.0" top="30.0" />
+                     </BorderPane.margin>
+                  </VBox>
+               </left>
+               <center>
+                  <TableView fx:id="tableauDespGaussJordan" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                  </TableView>
+               </center>
+            </BorderPane>
+         </children>
+      </VBox>
+      <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0">
+         <children>
+            <Label text="%vista_paso_resolucion_tableau.nueva_variable_basica" />
+            <Label fx:id="nuevaVariableBasica" text="1" />
+         </children>
+      </HBox>
+   </children>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
+</VBox>
