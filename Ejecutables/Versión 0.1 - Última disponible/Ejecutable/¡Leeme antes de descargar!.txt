@@ -1,0 +1,5 @@
+Éste es el ejecutable que andará en cualquier máquina. Sin embargo, es necesario que tengas:
+a)Instalado Java 8.
+b)Junto con Java 8, tener instalado JavaFX (En la mayoría de las distribuciones GNU/Linux no lo traen por defecto).
+
+Si no estás seguro de cumplir dichos requerimientos, ve a la carpeta "Instaladores", y descarga el que se adapte a tu máquina o dispositivo.
