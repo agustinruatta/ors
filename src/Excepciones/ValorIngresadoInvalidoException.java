@@ -17,7 +17,8 @@
 package Excepciones;
 
 /**
- *
+ * Excepción usada para cuando se ingresa un valor que es inválido
+ * (Por ejemplo, se ingresa un número decimal de la forma .43).
  * @author Agustín Ruatta <agustinruatta@gmail.com>
  */
 public class ValorIngresadoInvalidoException extends Exception{

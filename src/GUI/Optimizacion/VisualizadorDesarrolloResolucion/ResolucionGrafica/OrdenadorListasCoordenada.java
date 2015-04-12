@@ -139,6 +139,11 @@ public class OrdenadorListasCoordenada{
     
     private DIRECCION_BUSQUEDA direccionActual;
 
+    /**
+     * Constructor
+     * @param listaCoordenadas Lista de coordenadas que cumplen con todas las
+     * restricciones (Pueden estar repetidas).
+     */
     public OrdenadorListasCoordenada( ArrayList<Coordenada> listaCoordenadas ) {
         if( listaCoordenadas == null ){
             throw new IllegalArgumentException("Parámetro nulo");
@@ -149,9 +154,12 @@ public class OrdenadorListasCoordenada{
         
         this.yaSeOrdeno = false;
         
-        this.coordenadasOrdenadas = new Coordenada[ listaCoordenadas.size() ];
-        
-        this.getListaConCoordendasIgualesQuitadas( listaCoordenadas ).toArray( this.coordenadasOrdenadas );
+        //Quitar las coordenadas iguales
+        ArrayList<Coordenada> listaConCoordenadasIgualesQuitadas = this.getListaConCoordendasIgualesQuitadas( listaCoordenadas );
+        //Crear el Array que contendrá las coordenadas ordenadas
+        this.coordenadasOrdenadas = new Coordenada[listaConCoordenadasIgualesQuitadas.size()];
+        //Guardar en el array todas las coordenadas quitando las iguales
+        listaConCoordenadasIgualesQuitadas.toArray(coordenadasOrdenadas);
         
         this.coordenadaMasALaDerechaInferior = this.getCoordenadaMasALaDerechaInferior();
         
@@ -355,12 +363,11 @@ public class OrdenadorListasCoordenada{
     
     /**
      * Busca la siguiente coordenada que corresponde.
-     * @param indiceActual Indice del vector que se está recorriendo
+     * @param indiceActual Índice del vector que se está recorriendo
      * actualmente (Y que se va a intercambiar por la siguiente
      * coordenada que corresponda).
      * @return 
      */
-    @SuppressWarnings("null")
     private Coordenada getSiguienteCoordenada( int indiceActual ){
         
         Coordenada siguienteCoordenada = null;
@@ -575,6 +582,7 @@ public class OrdenadorListasCoordenada{
         
         for( Coordenada coordenada : this.coordenadasOrdenadas ){
             
+            //No es la primer coordenada que se evalúa
             if( _coordenadaMasALaDerechaInferior != null ){
                 
                 if( coordenada.getX() > _coordenadaMasALaDerechaInferior.getX() ){

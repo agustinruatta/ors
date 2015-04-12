@@ -24,8 +24,10 @@ import Optimizacion.MetodoDeLasDosFases.MetodoDeLasDosFases;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.util.Callback;
 
 /**
@@ -35,19 +37,31 @@ import javafx.util.Callback;
 public class PresentadorSolucionesOptimizacion extends PresentadorAbstracto{
     
     @FXML
-    private TableView<FilaCoeficientes> soluciones;
+    private TableView<FilaCoeficientes> tablaSoluciones;
+    
+    @FXML
+    private TextField solucionOptima;
+    
+    @FXML
+    private RadioButton mostrarFraccion;
+    
+    private MetodoDeLasDosFases metodoDeLasDosFases;
     
     /**
-     * Muestra las soluciones.
-     * @param metodoDeLasDosFases
+     * Muestra las tablaSoluciones.
+     * @param _metodoDeLasDosFases
      */
-    public void mostrarSoluciones( MetodoDeLasDosFases metodoDeLasDosFases ){
+    public void mostrarSoluciones( MetodoDeLasDosFases _metodoDeLasDosFases ){
+        this.metodoDeLasDosFases = _metodoDeLasDosFases;
         
-        this.completarTablaSoluciones( metodoDeLasDosFases.getSoluciones() );
+        this.completarTablaSoluciones();
+        
+        this.completarSolucionOptima();
     }
     
     
-    private void completarTablaSoluciones( Fraccion[] soluciones ){
+    private void completarTablaSoluciones(){
+        Fraccion[] soluciones = this.metodoDeLasDosFases.getSoluciones();
         
         //Agregar las columnas a la tabla
         for( int numeroColumna = 0; numeroColumna < soluciones.length; numeroColumna++ ){
@@ -66,11 +80,39 @@ public class PresentadorSolucionesOptimizacion extends PresentadorAbstracto{
                 
             });
             
-            this.soluciones.getColumns().add(columna);
+            this.tablaSoluciones.getColumns().add(columna);
         }
         
-        //Agregar las soluciones
-        this.soluciones.getItems().add( new FilaCoeficientes( soluciones ) );
+        //Agregar las tablaSoluciones
+        this.tablaSoluciones.getItems().add( new FilaCoeficientes( soluciones ) );
         
+    }
+    
+    
+    private void completarSolucionOptima(){
+        if( this.mostrarFraccion.isSelected() ){
+            this.completarSolucionOptimaComoFraccion();
+        }
+        else{
+            this.completarSolucionOptimaComoDecimal();
+        }
+    }
+    
+    private void completarSolucionOptimaComoFraccion(){
+        this.solucionOptima.setText( this.metodoDeLasDosFases.getSolucionOptima().toString() );
+    }
+    
+    private void completarSolucionOptimaComoDecimal(){
+        this.solucionOptima.setText( this.metodoDeLasDosFases.getSolucionOptima().toPlainString() );
+    }
+    
+    
+    /**
+     * Se apretó un RadioButton para elegir si se muestra
+     * la solución óptima como Fracción o número decimal.
+     */
+    @FXML
+    private void cambioPreferenciasVisualizaciónSolucionOptima(){
+        this.completarSolucionOptima();
     }
 }

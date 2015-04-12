@@ -63,11 +63,15 @@ public class Graficadora extends BorderPane{
     
     /**
      * Constructor.
-     * @param _igualdades
+     * La diferencia con el otro constructor es que en éste a las restricciones
+     * y función objetivo se la envía como una matriz de fracciones (E internamente
+     * las pasa a Restricciones).
      * @param _ancho
      * @param _alto
-     * @param _restricciones 
-     * @param _solucionOptima 
+     * @param _restricciones
+     * @param _igualdades
+     * @param _solucionOptima Restricción que contiene la solución
+     * óptima. Si es null, no se dibujará.
      * @throws IllegalArgumentException Cuando alguna/s fila/s de las restricciones
      * no tiene 2 variables o cuando no hay igual cantidad de restricciones que de igualdades.
      */
@@ -80,7 +84,7 @@ public class Graficadora extends BorderPane{
      * Constructor.
      * @param _ancho Ancho de la graficadora.
      * @param _alto Alto de la graficadora.
-     * @param _restricciones Restricciones que se van a dibujar
+     * @param _restricciones Lista con las restricciones que se van a dibujar
      * @param _solucionOptima Coeficientes de la función objetivo y solución optima,
      * expresadas como una restricción. Si es null, no se dibuja la solución óptima.
      */
@@ -223,13 +227,19 @@ public class Graficadora extends BorderPane{
         return new EjeCartesiano( this.ancho, this.alto, this.xMaximo, this.getPasoEjeX(), this.yMaximo, this.getPasoEjeY() );
     }
 
+    /**
+     * Devuelve el X máximo entre todas las restricciones y de la solución óptima
+     * @return 
+     */
     private double getXMaximo(){
         assert this.restricciones != null;
-        assert this.solucionOptima != null;
         
         ArrayList<RestriccionDeDosVariables> restriccionesParaVerXMaximo = new ArrayList<>(this.restricciones);
-        //Agregamos la solución óptima así no queda fuera de enfoque si llegase a tener un x más grande.
-        restriccionesParaVerXMaximo.add( this.solucionOptima );
+        
+        if( this.seMuestraRectaSolucionOptima() ){
+            //Agregamos la solución óptima así no queda fuera de enfoque si llegase a tener un x más grande.
+            restriccionesParaVerXMaximo.add( this.solucionOptima );
+        }
 
         double xMaximoTemp = 0;
 
@@ -251,13 +261,19 @@ public class Graficadora extends BorderPane{
         return xMaximoTemp + 1;
     }
 
+    /**
+     * Devuelve el Y máximo entre todas las restricciones y de la solución óptima
+     * @return 
+     */
     private double getYMaximo(){
         assert this.restricciones != null;
-        assert this.solucionOptima != null;
         
         ArrayList<RestriccionDeDosVariables> restriccionesParaVerYMaximo = new ArrayList<>(this.restricciones);
-        //Agregamos la solución óptima así no queda fuera de enfoque si llegase a tener un x más grande.
-        restriccionesParaVerYMaximo.add( this.solucionOptima );
+        
+        if( this.seMuestraRectaSolucionOptima() ){
+            //Agregamos la solución óptima así no queda fuera de enfoque si llegase a tener una y más grande.
+            restriccionesParaVerYMaximo.add( this.solucionOptima );
+        }
 
         double yMaximoTemp = 0;
 
@@ -277,6 +293,16 @@ public class Graficadora extends BorderPane{
 
         //Se le suma 1 para que no quede tan "apretado" el grafico.
         return yMaximoTemp + 1;
+    }
+    
+    /**
+     * Indica si se muestra la recta que pasa
+     * por la solución óptima. Ésta recta es de
+     * la función objetivo
+     * @return 
+     */
+    private boolean seMuestraRectaSolucionOptima(){
+        return this.solucionOptima != null;
     }
 
     private int getPasoEjeY(){

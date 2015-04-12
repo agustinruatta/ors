@@ -7,17 +7,33 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Optimizacion.VisualizadorDesarrolloResolucion.SolucionesOptimizacion.PresentadorSolucionesOptimizacion">
-   <top>
-      <Label text="%vista_soluciones_optimizacion.soluciones" BorderPane.alignment="TOP_LEFT">
-         <BorderPane.margin>
-            <Insets />
-         </BorderPane.margin></Label>
-   </top>
-   <center>
-      <TableView fx:id="soluciones" maxHeight="60.0" minHeight="60.0" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="TOP_CENTER">
-         <columnResizePolicy>
-            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-         </columnResizePolicy></TableView>
-   </center>
-</BorderPane>
+<VBox spacing="30.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Optimizacion.VisualizadorDesarrolloResolucion.SolucionesOptimizacion.PresentadorSolucionesOptimizacion">
+   <children>
+      <VBox spacing="10.0">
+         <children>
+            <Label text="%vista_soluciones_optimizacion.soluciones" />
+            <TableView fx:id="tablaSoluciones" maxHeight="60.0" minHeight="60.0" prefHeight="200.0" prefWidth="200.0">
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+            </TableView>
+         </children>
+      </VBox>
+      <HBox alignment="BASELINE_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+         <children>
+            <Label alignment="TOP_LEFT" text="%vista_soluciones_optimizacion.solucion_optima" />
+            <TextField fx:id="solucionOptima" />
+            <VBox spacing="5.0">
+               <children>
+                  <RadioButton fx:id="mostrarFraccion" mnemonicParsing="false" onAction="#cambioPreferenciasVisualizaciónSolucionOptima" selected="true" text="%vista_soluciones_optimizacion.mostrar_fraccion">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="opcionMostrar" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton mnemonicParsing="false" onAction="#cambioPreferenciasVisualizaciónSolucionOptima" text="%vista_soluciones_optimizacion.mostrar_decimales" toggleGroup="$opcionMostrar" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</VBox>

@@ -35,7 +35,6 @@ import javafx.scene.Node;
 import javafx.scene.control.Pagination;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.util.Callback;
 
 /**
  * Presentador encargado de la VistaVisualizadorResolución.
@@ -56,11 +55,13 @@ public class PresentadorVisualizadorDesarrolloResolucion extends PresentadorAbst
     @FXML
     private Pagination paginacion;
     
+    private boolean seMuestraResolucionPorMetodoGrafico;
+    
     private boolean seMuestraPasosResolucionTableau;
     
-    private boolean seMuestraAnalisisDeSensibilidad;
+    private boolean seMuestranSolucionesOptimizacion;
     
-    private boolean seMuestraResolucionPorMetodoGrafico;
+    private boolean seMuestraAnalisisDeSensibilidad;
     
     private Fraccion[][] restricciones;
     
@@ -78,22 +79,28 @@ public class PresentadorVisualizadorDesarrolloResolucion extends PresentadorAbst
      * Establecer todos los parámetros necesario para mostrar la resolución.
      * Es un sustituto al constructor ya que no se puede llamarlo (Debido
      * a que el presentador se crea automáticamente cuando se carga la vista).
-     * @param _seMuestraPasosResolucionTableau Indica si se va a mostrar
-     * o no los pasos de la resolución del Tableau.
-     * @param _seMuestraAnalisisDeSensibilidad Indica si se va a mostrar
-     * o no el análisis de sensibilidad.
      * @param _seMuestraResolucionPorMetodoGrafico Indica si se va a mostrar
      * o no la resolución por método gráfico.
-     * @param _restricciones
+     * @param _seMuestraPasosResolucionTableau Indica si se va a mostrar
+     * o no los pasos de la resolución del Tableau.
+     * @param _seMuestranSolucionesOptimizacion Indica si se van a mostrar o no
+     * las soluciones óptimas de la optimización. Por defecto se muestra. El
+     * único caso en donde no se muestran es cuando Z no está acotada
+     * y solamente se muestra la región factible en el método gráfico.
+     * @param _seMuestraAnalisisDeSensibilidad Indica si se va a mostrar
+     * o no el análisis de sensibilidad.
+     * @param _restricciones Restricciones que se ingresaron en forma de una matriz de Fraccion.
      * @param _solucionOptima
      * @param _metodoDeLasDosFases Método de las 2 fases resuelto, de donde
      * se extraerá la información del cálculo de optimización llevada a cabo.
      */
     @SuppressWarnings("AssignmentToCollectionOrArrayFieldFromParameter")
-    public void establecerParametrosResolucion( boolean _seMuestraPasosResolucionTableau, boolean _seMuestraAnalisisDeSensibilidad, boolean _seMuestraResolucionPorMetodoGrafico, Fraccion[][] _restricciones, RestriccionDeDosVariables _solucionOptima, MetodoDeLasDosFases _metodoDeLasDosFases ){
-        this.seMuestraPasosResolucionTableau = _seMuestraPasosResolucionTableau;
-        this.seMuestraAnalisisDeSensibilidad = _seMuestraAnalisisDeSensibilidad;
+    public void establecerParametrosResolucion( boolean _seMuestraResolucionPorMetodoGrafico, boolean _seMuestraPasosResolucionTableau, boolean _seMuestranSolucionesOptimizacion, boolean _seMuestraAnalisisDeSensibilidad, Fraccion[][] _restricciones, RestriccionDeDosVariables _solucionOptima, MetodoDeLasDosFases _metodoDeLasDosFases ){
         this.seMuestraResolucionPorMetodoGrafico = _seMuestraResolucionPorMetodoGrafico;
+        this.seMuestraPasosResolucionTableau = _seMuestraPasosResolucionTableau;
+        this.seMuestranSolucionesOptimizacion = _seMuestranSolucionesOptimizacion;
+        this.seMuestraAnalisisDeSensibilidad = _seMuestraAnalisisDeSensibilidad;
+        
         
         this.restricciones = _restricciones;
         
@@ -103,9 +110,10 @@ public class PresentadorVisualizadorDesarrolloResolucion extends PresentadorAbst
     }
     
     public final void reestablecerParametrosresolucion(){
-        this.seMuestraPasosResolucionTableau = false;
-        this.seMuestraAnalisisDeSensibilidad = false;
         this.seMuestraResolucionPorMetodoGrafico = false;
+        this.seMuestraPasosResolucionTableau = false;
+        this.seMuestranSolucionesOptimizacion = false;
+        this.seMuestraAnalisisDeSensibilidad = false;
         
         this.restricciones = null;
         
@@ -120,20 +128,12 @@ public class PresentadorVisualizadorDesarrolloResolucion extends PresentadorAbst
      * del problema de optimización.
      * @throws NoSePudoCargarVistaException
      */
-    @SuppressWarnings("Convert2Lambda")
     public void mostrarDesarrolloResolucion() throws NoSePudoCargarVistaException{
         assert this.metodoDeLasDosFases != null;
         
         this.paginacion.setPageCount( this.getCantidadPaginas() );
         
-        
-        this.paginacion.setPageFactory(new Callback<Integer, Node>(){
-            @Override
-            public Node call(Integer pageIndex) {
-                return getPagina(pageIndex);
-            }
-        });
-        
+        this.paginacion.setPageFactory( (Integer pageIndex) -> getPagina(pageIndex) );
         
     }
     
@@ -143,7 +143,11 @@ public class PresentadorVisualizadorDesarrolloResolucion extends PresentadorAbst
         try {
             
             if( this.seMuestraResolucionPorMetodoGrafico && numeroPagina == 0 ){
-                return this.getResolucionPorMetodoGrafico();
+                /*
+                Si se muestra las soluciones óptimas, entonces es un problema
+                acotado y se puede mostrar la recta de la función objetivo.
+                */
+                return this.getResolucionPorMetodoGrafico( this.seMuestranSolucionesOptimizacion );
             }
             /*
             No hace falta estar preguntando si se muestra los pasos
@@ -215,8 +219,24 @@ public class PresentadorVisualizadorDesarrolloResolucion extends PresentadorAbst
         return new AnchorPane();
     }
     
-    private Node getResolucionPorMetodoGrafico(){
-        Graficadora graficadora = new Graficadora( this.getAnchoResolucionMetodoGrafico(), this.getAltoResolucionMetodoGrafico(), this.restricciones, this.metodoDeLasDosFases.getIgualdadesRestricciones() , this.solucionOptima );
+    /**
+     * 
+     * @param seMuestraRectaFuncionObjetivo Si es true, se muestra la recta
+     * de la función objetivo que pasa por el punto de la solución óptima.
+     * Normalmente ésto es así. La única razón para no mostrarlo es que
+     * la solución no esté acotada y no se pueda mostarla (Debido a que
+     * no hay solución óptima).
+     * @return 
+     */
+    private Node getResolucionPorMetodoGrafico( boolean seMuestraRectaFuncionObjetivo ){
+        Graficadora graficadora;
+        
+        if( seMuestraRectaFuncionObjetivo ){
+            graficadora = new Graficadora( this.getAnchoResolucionMetodoGrafico(), this.getAltoResolucionMetodoGrafico(), this.restricciones, this.metodoDeLasDosFases.getIgualdadesRestricciones() , this.solucionOptima);
+        }
+        else{
+            graficadora = new Graficadora( this.getAnchoResolucionMetodoGrafico(), this.getAltoResolucionMetodoGrafico(), this.restricciones, this.metodoDeLasDosFases.getIgualdadesRestricciones() , null);
+        }
         
         return graficadora;
     }
@@ -233,14 +253,19 @@ public class PresentadorVisualizadorDesarrolloResolucion extends PresentadorAbst
     
     
     private int getCantidadPaginas(){
-        //Arranca en 1 ya que las soluciones se muestran siempres
-        int cantidadPaginas = 1;
+        int cantidadPaginas = 0;
         
         if( this.seMuestraResolucionPorMetodoGrafico ){
             cantidadPaginas++;
         }
         if( this.seMuestraPasosResolucionTableau ){
             cantidadPaginas += this.metodoDeLasDosFases.getPasosDeUnaFaseMetodoDeLasDosFaseses().size();
+        }
+        if( this.seMuestranSolucionesOptimizacion ){
+            cantidadPaginas++;
+        }
+        if( this.seMuestraAnalisisDeSensibilidad ){
+            //TODO: agregar la cantidad de páginas que se agregan cuando se implemente
         }
         
         return cantidadPaginas;

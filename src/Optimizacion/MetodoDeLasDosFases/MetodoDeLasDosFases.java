@@ -102,28 +102,11 @@ public class MetodoDeLasDosFases {
 
     /**
      * Constructor.
-     * No se resuelve de manera predeterminada. Si se desea resolver
-     * se debe llamar posteriormente al método resolver.
+     * No resuelve el problema. Para ello se debe llamar a resolver()
      * @param datosIngresados
-     * @throws ZNoAcotadaException
-     * @throws DemasiadasIteracionesMetodoDosFasesException
-     * @throws SinSolucionesFactiblesException 
-     */
-    public MetodoDeLasDosFases( DatosOptimizacion datosIngresados ) throws IllegalArgumentException, ZNoAcotadaException, DemasiadasIteracionesMetodoDosFasesException, SinSolucionesFactiblesException{
-        this(datosIngresados, false);
-    }
-
-    /**
-     * Constructor.
-     * @param datosIngresados
-     * @param seDebeResolver Indica si se debe resolver el problema
-     * de optimización.
-     * @throws ZNoAcotadaException
-     * @throws DemasiadasIteracionesMetodoDosFasesException
-     * @throws SinSolucionesFactiblesException 
      */
     @SuppressWarnings("OverridableMethodCallInConstructor")
-    public MetodoDeLasDosFases( DatosOptimizacion datosIngresados, boolean seDebeResolver ) throws ZNoAcotadaException, DemasiadasIteracionesMetodoDosFasesException, SinSolucionesFactiblesException{
+    public MetodoDeLasDosFases( DatosOptimizacion datosIngresados ){
         
         //Guardar los parámetros en los atributos de la clase.
         this.objetivoDeLaOptimizacion = datosIngresados.getObjetivoDeLaOptimizacion();
@@ -187,10 +170,6 @@ public class MetodoDeLasDosFases {
         
         //Generar el tableau aumentado
         this.generarTableauAumentado();
-        
-        if( seDebeResolver ){
-            this.resolver();
-        }
         
     }
 
@@ -910,16 +889,13 @@ public class MetodoDeLasDosFases {
     
     /**
      * Devuelve la solución de la optimización.
-     * @return Si ya se resolvió el método de las dos fases,
-     * la solución óptima. Si no se resolvió devuelve null.
+     * @return
      */
     public Fraccion getSolucionOptima(){
-        if( this.yaSeResolvio ){
-            return this.tableau.getValor( Tableau.NUMERO_FILA_FUNCION_OBJETIVO , this.tableau.NUMERO_COLUMNA_TI);
-        }
-        else{
-            return null;
-        }
+        assert  this.yaSeResolvio == true;
+        
+        return this.tableau.getValor( Tableau.NUMERO_FILA_FUNCION_OBJETIVO , this.tableau.NUMERO_COLUMNA_TI);
+        
     }
 
     /**
@@ -929,6 +905,8 @@ public class MetodoDeLasDosFases {
      */
     @SuppressWarnings("ReturnOfCollectionOrArrayField")
     public Fraccion[] getSoluciones() {
+        assert this.yaSeResolvio == true;
+        
         return soluciones;
     }
     

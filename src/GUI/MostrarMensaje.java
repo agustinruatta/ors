@@ -59,6 +59,7 @@ public final class MostrarMensaje {
                 + "\nProbablemente el modelo esté mal formulado, ya sea por haber omitido una"
                 + "\nrestricción relevante o por haberla establecido de modo incorrecta."
                 + "\nAdemás verifique que no haya puesto Maximizar cuando en realidad quiere Minimizar o viceversa."
+                + "\nSin embargo, si seleccionó ver por el método gráfico, se le mostrará la región factible."
         );
     }
     

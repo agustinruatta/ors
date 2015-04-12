@@ -288,31 +288,58 @@ public final class PresentadorIntroduccionDatosOptimizacion extends PresentadorA
         try {
             DatosOptimizacion datosIngresados = new DatosOptimizacion(objetivoSeleccionado, funcionObjetivo, restricciones, igualdades);
             
-            MetodoDeLasDosFases metodoDeLasDosFases = new MetodoDeLasDosFases(datosIngresados, true);
-            
+            //Obtener el presentador
             PresentadorVisualizadorDesarrolloResolucion presentador = ControladorVistas.getInstance().getVista(ListadoVistas.VISUALIZADOR_DESARROLLO_RESOLUCION).<PresentadorVisualizadorDesarrolloResolucion>getPresentador();
             
             RestriccionDeDosVariables restriccionSolucionOptima = null;
             
-            if( this.seMuestraResolucionPorMetodoGrafico() ){
-                restriccionSolucionOptima = new RestriccionDeDosVariables( this.getFuncionObjetivo()[0] , this.getFuncionObjetivo()[1], Igualdades.IGUAL, metodoDeLasDosFases.getSolucionOptima() );
+            MetodoDeLasDosFases metodoDeLasDosFases = new MetodoDeLasDosFases(datosIngresados);
+            
+            try{
+                metodoDeLasDosFases.resolver();
+                
+                //Si se muestra el método gráfico, guardar la restricción de la función objetivo
+                if( this.seMuestraResolucionPorMetodoGrafico() ){
+                    restriccionSolucionOptima = new RestriccionDeDosVariables( this.getFuncionObjetivo()[0] , this.getFuncionObjetivo()[1], Igualdades.IGUAL, metodoDeLasDosFases.getSolucionOptima() );
+                }
+                
+                presentador.establecerParametrosResolucion( this.seMuestraResolucionPorMetodoGrafico(), this.seMuestranLosPasosDeResolucionDeTableau(), true, this.seMuestranElAnalisisDeSensibilidad(), this.getRestricciones(), restriccionSolucionOptima, metodoDeLasDosFases);
+            }
+            /*
+            Si Z no está acotada, aunque sea mostrar la solución por el método gráfico
+            (Se va a mostrar la región factible, aunque no se mostrará la recta de la
+            función objetivo que pase por la solución óptima, porque no hay).
+            */
+            catch (ZNoAcotadaException ex) {
+                MostrarMensaje.ZNoEstaAcotada();
+                
+                //Si no es acotada y no se muestra la resolución por método gráfico, volver, porque no hay nada que mostrar.
+                if( !this.seMuestraResolucionPorMetodoGrafico() ){
+                    return;
+                }
+                else{
+                    //Mostrar solamente el método gráfico
+                    presentador.establecerParametrosResolucion( true, false, false, false, this.getRestricciones(), restriccionSolucionOptima, metodoDeLasDosFases);
+                }
             }
             
-            //Si solo se muestra la solución, no hace falta mostrar este mensaje
+            
+            /*
+            Si solo se muestra la solución, no hace falta mostrar este mensaje,
+            ya que no le importa lo que pasó en el medio (Ya que solamente ve
+            la soución, nada más).
+            */
             if( 
-                    metodoDeLasDosFases.getDatosMetodoDeLasDosFases().seReacomodoAlgunaRestriccionConTINegativo() &&
+                    datosIngresados.seReacomodoAlgunaRestriccionConTINegativo() &&
                     ( this.seMuestraResolucionPorMetodoGrafico() || this.seMuestranLosPasosDeResolucionDeTableau() || this.seMuestranElAnalisisDeSensibilidad() )
                     ){
                 MostrarMensaje.seReacomodoAlgunaRestriccionConTINegativo();
             }
             
-            presentador.establecerParametrosResolucion( this.seMuestranLosPasosDeResolucionDeTableau() , this.seMuestranElAnalisisDeSensibilidad(), this.seMuestraResolucionPorMetodoGrafico(), this.getRestricciones(), restriccionSolucionOptima, metodoDeLasDosFases);
+            
             presentador.mostrarDesarrolloResolucion();
             
             ControladorVistas.getInstance().mostrarVista(ListadoVistas.VISUALIZADOR_DESARROLLO_RESOLUCION );
-        }
-        catch (ZNoAcotadaException ex) {
-            MostrarMensaje.ZNoEstaAcotada();
         }
         catch (DemasiadasIteracionesMetodoDosFasesException ex) {
             MostrarMensaje.demasiadasIteraciones();
@@ -320,7 +347,10 @@ public final class PresentadorIntroduccionDatosOptimizacion extends PresentadorA
         catch (SinSolucionesFactiblesException ex) {
             MostrarMensaje.sinSolucionesFactibles();
         }
-        //No llega nunca a este catch ya que antes controla si son valores válidos
+        /*
+        No debería llegar nunca a este catch ya que antes, en éste mismo método,
+        se controla si son valores válidos.
+        */
         catch (ValorIngresadoInvalidoException ex) {
             GestionErrores.registrarError(ex);
         }

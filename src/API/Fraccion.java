@@ -93,14 +93,15 @@ public class Fraccion implements Cloneable{
     
     /**
      * Contructor.
-     * @param fraccion Es un string del tipo AAAA/BBBB en donde
-     * AAAA es un número entero y BBBB es otro número entero.
+     * @param fraccionONumeroDecimal Es un string del tipo AAAA/BBBB en donde
+     * AAAA es un número entero y BBBB es otro número entero, o es un string
+     * que sea un número entero o un número decimal.
      * Por ejemplo los siguientes argumentos serían válidos
      * <ul>
-     * <li>"55/12".</li>
-     * <li>"33/1".</li>
-     * <li>"1234/1234".</li>
-     * <li>"3425"</li>
+     * <li>"55/12  (Fracción)".</li>
+     * <li>"33/1  (Fracción)".</li>
+     * <li>"1234/1234  (Fracción)".</li>
+     * <li>"3425  (Número entero)"</li>
      * <li>"3455.43 (Numero decimal)</li>
      * </ul>. 
      * Sin embargo los siguientes serían inválidos:
@@ -112,30 +113,34 @@ public class Fraccion implements Cloneable{
      * <li>"123.34/12" (El denominador no es un argumento entero)</li>
      * </ul>
      * @throws IllegalArgumentException Cuando contiene más de un signo que
-     * representa la fracción, no tiene numerador o no contiene denominador.
+     * representa la fracción, no tiene numerador, no contiene denominador
+     * o alguno de éstos no es un número válido.
      */
-    public Fraccion( String fraccion ){
+    public Fraccion( String fraccionONumeroDecimal ){
+        
+        //*****Inicio control para saber si el parámetro es correcto
         
         //Tiene más de un signo de division
-        if( fraccion.indexOf( this.SIGNO_FRACCION ) != fraccion.lastIndexOf( this.SIGNO_FRACCION ) ){
+        if( fraccionONumeroDecimal.indexOf( this.SIGNO_FRACCION ) != fraccionONumeroDecimal.lastIndexOf( this.SIGNO_FRACCION ) ){
             throw new IllegalArgumentException("Contiene más de un signo que representa la Fracción");
         }
         //No tiene numerador
-        if( String.valueOf( fraccion.charAt(0) ).equals( this.SIGNO_FRACCION )){
+        if( String.valueOf( fraccionONumeroDecimal.charAt(0) ).equals( this.SIGNO_FRACCION )){
             throw new IllegalArgumentException("No tiene numerador");
         }
         //No tiene denominador
-        if( String.valueOf( fraccion.charAt( fraccion.length() - 1 ) ).equals( this.SIGNO_FRACCION )){
+        if( String.valueOf( fraccionONumeroDecimal.charAt( fraccionONumeroDecimal.length() - 1 ) ).equals( this.SIGNO_FRACCION )){
             throw new IllegalArgumentException("No tiene denominador");
         }
         
         BigInteger num = null;
         BigInteger den = null;
         
-        String[] fraccionDividida = fraccion.split( this.SIGNO_FRACCION );
+        //Dividir la fracción para obtener el numerador y el denominador
+        String[] fraccionDividida = fraccionONumeroDecimal.split( this.SIGNO_FRACCION );
         
         //Es una Fracción
-        if( fraccion.contains( this.SIGNO_FRACCION ) ){
+        if( fraccionONumeroDecimal.contains( this.SIGNO_FRACCION ) ){
             
             try {
                 num = new BigInteger( fraccionDividida[0] );
@@ -146,7 +151,7 @@ public class Fraccion implements Cloneable{
             try {
                 den = new BigInteger( fraccionDividida[1] );
             } catch (NumberFormatException e) {
-                throw new IllegalArgumentException("Numerador incorrecto");
+                throw new IllegalArgumentException("Denominador incorrecto");
             }
         }
         //Es un número entero o decimal, no tiene el signo de Fracción
@@ -469,12 +474,32 @@ public class Fraccion implements Cloneable{
     
     /**
      * Devuelve un String representando la Fracción.
-     * @return Devuelve "( numerador / denominador )", en donde numerador
-     * y denominador son los números correspondientes de ellos.
+     * @return Si el denominador es diferente de 1,
+     * devuelve "( numerador / denominador )", en donde numerador
+     * y denominador son los números correspondientes de ellos.<br>
+     * Si el denominador es igual a 1, devuelve el número que representa
+     * el numerador.
      */
     @Override
     public String toString(){
         
+        //Si no tiene denominador igual a 1, devolver en formato de fracción
+        if( !this.denominador.equals( BigInteger.ONE ) ){
+            return this.toFraccionString();
+        }
+        //Tiene denominador igual a 1, devolver solamente en formato de número entero
+        else{
+            return this.numerador.toString();
+        }
+        
+    }
+    
+    /**
+     * Devuelve un String representando una fracción siempre,
+     * sin importar que tenga o no como denominador un 1.
+     * @return 
+     */
+    public String toFraccionString(){
         return ( "( " + numerador.toString() + " / " + denominador.toString() + " )" );
     }
     
