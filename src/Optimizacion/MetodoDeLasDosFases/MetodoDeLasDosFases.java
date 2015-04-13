@@ -77,7 +77,7 @@ public class MetodoDeLasDosFases {
      * En ésta matriz es en donde se van a realizar los cálculos.
      * INCLUYE EL TI.
      */
-    private Tableau tableau;
+    private final Tableau tableau;
     
     /**
      * Indica si ya está resuelto el tableau.
@@ -100,6 +100,25 @@ public class MetodoDeLasDosFases {
      */
     private int numeroIteracion = 0;
 
+    
+    
+    /**
+     * Constructor.
+     * @param datosIngresados
+     * @param seDebeResolver Indica si se debe resolver el problema
+     * de optimización.
+     * @throws ZNoAcotadaException
+     * @throws DemasiadasIteracionesMetodoDosFasesException
+     * @throws SinSolucionesFactiblesException 
+     */
+    @SuppressWarnings("OverridableMethodCallInConstructor")
+    public MetodoDeLasDosFases( DatosOptimizacion datosIngresados, boolean seDebeResolver ) throws ZNoAcotadaException, DemasiadasIteracionesMetodoDosFasesException, SinSolucionesFactiblesException{
+        this(datosIngresados);
+        
+        if( seDebeResolver ){
+            this.resolver();
+        }
+    }
     /**
      * Constructor.
      * No resuelve el problema. Para ello se debe llamar a resolver()
