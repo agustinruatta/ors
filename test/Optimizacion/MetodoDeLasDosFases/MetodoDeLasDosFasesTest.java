@@ -80,17 +80,14 @@ public class MetodoDeLasDosFasesTest {
             {Fraccion.UNO, Fraccion.UNO, Fraccion.CERO, Fraccion.MENOS_UNO, Fraccion.CERO, Fraccion.UNO, Fraccion.UNO},
         };
         
-        try {
-            DatosOptimizacion datosIngresados = new DatosOptimizacion(Objetivo.MAXIMIZAR, funcionObjetivo, restricciones, igualdadesIngresadas);
-            MetodoDeLasDosFases metodo = new MetodoDeLasDosFases( datosIngresados );
+        DatosOptimizacion datosIngresados = new DatosOptimizacion(Objetivo.MAXIMIZAR, funcionObjetivo, restricciones, igualdadesIngresadas);
+        
+        MetodoDeLasDosFases metodo = new MetodoDeLasDosFases( datosIngresados );
 
-            Fraccion[][] tableauDevuelto = metodo.getTableau().getTableauEnMatriz();
+        Fraccion[][] tableauDevuelto = metodo.getTableau().getTableauEnMatriz();
 
-            assertArrayEquals(tableauEsperado, tableauDevuelto);
-        }
-        catch ( DemasiadasIteracionesMetodoDosFasesException | SinSolucionesFactiblesException | ZNoAcotadaException | IllegalArgumentException e ) {
-            e.printStackTrace();
-        }
+        assertArrayEquals(tableauEsperado, tableauDevuelto);
+        
         
         
     }
@@ -134,17 +131,13 @@ public class MetodoDeLasDosFasesTest {
             
         };
         
-        try {
-            DatosOptimizacion datosIngresados = new DatosOptimizacion(Objetivo.MAXIMIZAR, funcionObjetivo, restricciones, igualdadesIngresadas);
-            MetodoDeLasDosFases metodo = new MetodoDeLasDosFases( datosIngresados );
+        DatosOptimizacion datosIngresados = new DatosOptimizacion(Objetivo.MAXIMIZAR, funcionObjetivo, restricciones, igualdadesIngresadas);
+        
+        MetodoDeLasDosFases metodo = new MetodoDeLasDosFases( datosIngresados );
 
-            Fraccion[][] tableauDevuelto = metodo.getTableau().getTableauEnMatriz();
+        Fraccion[][] tableauDevuelto = metodo.getTableau().getTableauEnMatriz();
 
-            assertArrayEquals(tableauEsperado, tableauDevuelto);
-        }
-        catch ( DemasiadasIteracionesMetodoDosFasesException | SinSolucionesFactiblesException | ZNoAcotadaException | IllegalArgumentException e ) {
-            e.printStackTrace();
-        }
+        assertArrayEquals(tableauEsperado, tableauDevuelto);
         
         
     }
@@ -199,18 +192,12 @@ public class MetodoDeLasDosFasesTest {
             
         };
         
-        try {
-            DatosOptimizacion datosIngresados = new DatosOptimizacion(Objetivo.MINIMIZAR, funcionObjetivo, restricciones, igualdadesIngresadas);
-            MetodoDeLasDosFases metodo = new MetodoDeLasDosFases( datosIngresados );
+        DatosOptimizacion datosIngresados = new DatosOptimizacion(Objetivo.MINIMIZAR, funcionObjetivo, restricciones, igualdadesIngresadas);
+        MetodoDeLasDosFases metodo = new MetodoDeLasDosFases( datosIngresados );
 
-            Fraccion[][] tableauDevuelto = metodo.getTableau().getTableauEnMatriz();
+        Fraccion[][] tableauDevuelto = metodo.getTableau().getTableauEnMatriz();
 
-            assertArrayEquals(tableauEsperado, tableauDevuelto);
-        }
-        catch ( DemasiadasIteracionesMetodoDosFasesException | SinSolucionesFactiblesException | ZNoAcotadaException | IllegalArgumentException e ) {
-            e.printStackTrace();
-        }
-        
+        assertArrayEquals(tableauEsperado, tableauDevuelto);
         
     }
     
