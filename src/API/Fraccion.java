@@ -38,6 +38,9 @@ public class Fraccion implements Cloneable{
      */
     public static final Fraccion CERO = new Fraccion( 0, 1 );
     
+    /**
+     * Constante que representa una fracción igual a uno.
+     */
     public static final Fraccion UNO = new Fraccion( 1, 1 );
     
     public static final Fraccion DOS = new Fraccion( 2,1 );
