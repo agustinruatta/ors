@@ -231,8 +231,6 @@ public class MetodoDeLasDosFasesTest {
         Fraccion solucionEsperada[] = { new Fraccion(2), new Fraccion(0)};
         
         
-        
-        
         try {
             DatosOptimizacion datosIngresados = new DatosOptimizacion(Objetivo.MAXIMIZAR, funcionObjetivo, restricciones, igualdadesIngresadas);
             MetodoDeLasDosFases metodo = new MetodoDeLasDosFases( datosIngresados );
@@ -277,9 +275,6 @@ public class MetodoDeLasDosFasesTest {
         */
         Fraccion solucionEsperada[] = { new Fraccion(7), new Fraccion(2)};
         
-        
-        
-
         try {
             DatosOptimizacion datosIngresados = new DatosOptimizacion(Objetivo.MAXIMIZAR, funcionObjetivo, restricciones, igualdadesIngresadas);
             MetodoDeLasDosFases metodo = new MetodoDeLasDosFases( datosIngresados );
@@ -324,8 +319,6 @@ public class MetodoDeLasDosFasesTest {
         */
         Fraccion solucionEsperada[] = { new Fraccion(7.5), new Fraccion(4.5)};
         
-        
-
         try {
             DatosOptimizacion datosIngresados = new DatosOptimizacion(Objetivo.MINIMIZAR, funcionObjetivo, restricciones, igualdadesIngresadas);
             MetodoDeLasDosFases metodo = new MetodoDeLasDosFases( datosIngresados );
@@ -416,8 +409,6 @@ public class MetodoDeLasDosFasesTest {
         */
         Fraccion solucionEsperada[] = { new Fraccion(0), new Fraccion(12)};
         
-        
-
         try {
             DatosOptimizacion datosIngresados = new DatosOptimizacion(Objetivo.MINIMIZAR, funcionObjetivo, restricciones, igualdadesIngresadas);
             MetodoDeLasDosFases metodo = new MetodoDeLasDosFases( datosIngresados );
@@ -480,8 +471,6 @@ public class MetodoDeLasDosFasesTest {
         */
         Fraccion solucionEsperada[] = { new Fraccion(48), new Fraccion(31), new Fraccion(39), new Fraccion(43), new Fraccion(15)};
         
-        
-
         try {
             DatosOptimizacion datosIngresados = new DatosOptimizacion(Objetivo.MINIMIZAR, funcionObjetivo, restricciones, igualdadesIngresadas);
             MetodoDeLasDosFases metodo = new MetodoDeLasDosFases( datosIngresados );
