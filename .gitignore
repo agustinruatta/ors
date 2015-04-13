@@ -15,5 +15,7 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+#No subir la carpeta donde se compila las clases.
 /build/
+#No subir la carpeta donde se guarda el ejecutable que se genera.
 /dist/
