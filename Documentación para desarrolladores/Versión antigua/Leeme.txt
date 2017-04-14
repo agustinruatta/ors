@@ -1,7 +1,0 @@
-Ésta versión es a la que se hace referencia en el documento, en la parte "Historial de versiones".
-
-Ésto fue en donde se concibió el software. Podrá encontrar el código fuente y el ejecutables. Además puede abrir el proyecto con Netbeans
-
-No use el programa para ejecutarlo en un entorno de trabajo (Ya que es un programa viejo con falta de funcionalidad) ni tampoco use el código fuente (Ya que puede contener errores no corregidos).
-
-Para más información, vea el archivo "Documentación.pdf"
