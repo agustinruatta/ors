@@ -2,8 +2,8 @@ En este directorio, podrás encontrar 2 carpetas.
 
 ## Carpeta "Ejecutable" ##
 Aquí encontrarás el ejecutable que andará en cualquier máquina. Sin embargo, es necesario que tengas:
-a)Instalado Java 8.
-b)Junto con Java 8, tener instalado JavaFX (En la mayoría de las distribuciones GNU/Linux no lo traen por defecto).
+- Instalado Java 8.
+- Junto con Java 8, tener instalado JavaFX (En la mayoría de las distribuciones GNU/Linux no lo traen por defecto).
 
 Si no estás seguro de cumplir dichos requerimientos, ve a la carpeta "Instaladores", y descarga el que se adapte a tu máquina o dispositivo.
 
