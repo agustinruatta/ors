@@ -19,3 +19,4 @@ hs_err_pid*
 #No subir la carpeta donde se guarda el ejecutable que se genera.
 /dist/
 !/Descargar el programa/Versión 0.1.1 - Última disponible/Ejecutable/ORS 0.1.1.jar
+/nbproject/private/
